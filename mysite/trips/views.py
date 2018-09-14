@@ -65,9 +65,15 @@ def echo(request, userid):
 
 
 """
-
+from .models import Record
 def frontpage(request):
-	return render(request,'dashboard/index.html',{})
+    records=Record.objects.filter()
+    income_list = [record.cash for record in records if record.balance_type == '收入']
+    outcome_list = [record.cash for record in records if record.balance_type == '支出']
+    income =sum(income_list) if len(income_list)!=0 else 0
+    outcome =sum(outcome_list) if len(outcome_list)!=0 else 0
+    net = income-outcome
+    return render(request,'dashboard/index.html',{'records':records,'income':income,'outcome':outcome,'net':net})
 
 
 

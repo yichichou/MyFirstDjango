@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
 # Import view functions from trips app.
 from trips import views
@@ -24,6 +24,6 @@ urlpatterns = [
 	url(r'^hello/$', views.hello_world), #regex:代表的是 hello/ 這種 URL  #hello_world 這個 view的function
 	#url(r'^echo/(?P<userid>[0-9]+)$', views.echo),
 	url(r'^echo/$', views.echo),
-	url(r'^$', views.frontpage),
+	url(r'^', include('trips.urls')),
 	url(r'^home/$', views.home),
 ]

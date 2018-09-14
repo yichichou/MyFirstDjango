@@ -160,7 +160,6 @@
           <table class="table table-striped table-sm">
             <thead>
               <tr>
-                <th>#</th>
                 <th>日期</th>
                 <th>描述</th>
                 <th>分類</th>
@@ -169,6 +168,15 @@
               </tr>
             </thead>
             <tbody>
+              {% for record in records %}
+              <tr>
+                <td>{{ record.date | date:"Y-m-d"}}</td>
+                <td>{{ record.description }}</td>
+                <td>{{ record.category }}</td>
+                <td>{{ record.cash }}</td>
+                <td>{{ record.balance_type }}</td>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
