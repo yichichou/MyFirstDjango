@@ -24,6 +24,6 @@ urlpatterns = [
 	url(r'^hello/$', views.hello_world), #regex:代表的是 hello/ 這種 URL  #hello_world 這個 view的function
 	#url(r'^echo/(?P<userid>[0-9]+)$', views.echo),
 	url(r'^echo/$', views.echo),
-	url(r'^', include('trips.urls')),
+	url(r'', include('trips.urls')),
 	url(r'^home/$', views.home),
 ]

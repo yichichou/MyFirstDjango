@@ -65,7 +65,7 @@ def echo(request, userid):
 
 
 """
-from .models import Record
+from .models import Record, Category
 def frontpage(request):
     records=Record.objects.filter()
     income_list = [record.cash for record in records if record.balance_type == '收入']
@@ -75,7 +75,9 @@ def frontpage(request):
     net = income-outcome
     return render(request,'dashboard/index.html',locals())
 
-
+def settings(request):
+    categories =Category.objects.filter()
+    return render(request,'dashboard/settings.html',locals())
 
 	
 from django.shortcuts import render

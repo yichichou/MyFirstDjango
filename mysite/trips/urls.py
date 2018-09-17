@@ -5,5 +5,6 @@ from . import views
 
 #url(regex, view)
 urlpatterns = [
-	url(r'^$', views.frontpage),	
+	url(r'^$', views.frontpage),
+    url(r'^settings/$',views.settings),	
 ]
