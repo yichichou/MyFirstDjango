@@ -65,6 +65,7 @@ def echo(request, userid):
 
 
 """
+from django.shortcuts import redirect
 from .models import Record, Category
 def frontpage(request):
     records=Record.objects.filter()
@@ -76,8 +77,20 @@ def frontpage(request):
     return render(request,'dashboard/index.html',locals())
 
 def settings(request):
-    categories =Category.objects.filter()
+    categories = Category.objects.filter()
     return render(request,'dashboard/settings.html',locals())
+
+def addCategory(request):
+    '''為了避免有人用GET的方式(也就是直接在網址後面輸入addCategory)呼叫addCategory方法，所以要設定條件，之後就會直接導入settings/'''
+    if request.method=='POST': 
+        posted_data = request.POST
+        '''表單內容是使用post的方式傳，所以這裡用post來接，所接入的值為一個dictionary的物件''' 
+        category=posted_data['add_category']
+        Category.objects.get_or_create(category=category)
+        '''使用get_or_create是避免會有重複的值出現'''
+    return redirect('/settings')
+    '''表示上面事情完成後，回傳後用redirect的方式，回傳到/settings的頁面'''
+
 
 	
 from django.shortcuts import render
