@@ -81,7 +81,7 @@ def settings(request):
     return render(request,'dashboard/settings.html',locals())
 
 def addCategory(request):
-    '''為了避免有人用GET的方式(也就是直接在網址後面輸入addCategory)呼叫addCategory方法，所以要設定條件，之後就會直接導入settings/'''
+    '''為了避免有人用GET的方式(也就是直接在網址後面輸入addCategory)呼叫addCategory方法，所以要設定條件，之後就會直接導入/settings(也就是執行return redirect('/settings'))'''
     if request.method=='POST': 
         posted_data = request.POST
         '''表單內容是使用post的方式傳，所以這裡用post來接，所接入的值為一個dictionary的物件''' 
@@ -91,6 +91,9 @@ def addCategory(request):
     return redirect('/settings')
     '''表示上面事情完成後，回傳後用redirect的方式，回傳到/settings的頁面'''
 
+def deleteCategory(request,category):
+    Category.objects.filter(category=category).delete()
+    return redirect('/settings')
 
 	
 from django.shortcuts import render

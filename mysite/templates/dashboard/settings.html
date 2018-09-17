@@ -23,8 +23,10 @@
             <tbody>
                 {% for category in categories %}
                 <tr>
-                    <td>{{ category.category }}</td>
-
+                    <td>
+                        {{ category.category }}
+                        <a href="/delete_category/{{ category.category }}">刪除</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
