@@ -99,6 +99,19 @@ def deleteCategory(request,category):
     return redirect('/settings')
 
 	
+def addRecord(request):
+    if request.method =="POST":
+        form = RecordForm(request.POST)
+
+        #檢查form接收到的值是否有符合規定，相當於第三方驗證(如:信箱格式規定,)。is_valid()是用來驗證有沒有這個錯誤
+        if form.is_valid():
+
+            #form.save表示通過驗證，就存進至model裡
+            form.save ()
+    return redirect('/')
+
+
+
 from django.shortcuts import render
 from .models import Post  #取得所有 posts -- 透過 Post.objects.all() 從資料庫取得全部的 posts，並傳入 home.html 這個 template。
 
