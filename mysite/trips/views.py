@@ -110,6 +110,13 @@ def addRecord(request):
             form.save ()
     return redirect('/')
 
+def deleteRecord(request):
+    if request.method == "POST":
+        #delete_val是index.html中的一個欄位的name值
+        id = request.POST['delete_val']
+        Record.objects.filter(id=id).delete()
+    return redirect('/')
+
 
 
 from django.shortcuts import render

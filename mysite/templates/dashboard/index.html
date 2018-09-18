@@ -55,14 +55,14 @@
 
           <tr>
             {% for field in record_form %}
-            <th>{{ field }}</th>
+            <td>{{ field }}</td>
             {% endfor %}
           </tr>
 
         </tbody>
       </table>
       <div class="right-area">
-        <input type="submit" class="btn show-mew-item" value="新增紀錄" />
+        <input type="submit" class="btn btn-info show-new-item" value="新增紀錄" />
       </div>
     </form>
   </div>
@@ -80,6 +80,7 @@
       <col style="width:20%">
       <col style="width:18%">
       <col style="width:7%">
+      <col style="width:5%">
 
       <thead>
         <tr>
@@ -88,6 +89,7 @@
           <th>分類</th>
           <th>金額</th>
           <th>收支</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -98,6 +100,14 @@
           <td>{{ record.category }}</td>
           <td>{{ record.cash }}</td>
           <td>{{ record.balance_type }}</td>
+          <td>
+            <form action="/delete_record" method="post">
+              {% csrf_token %}
+              <!--讓刪除時，知道這筆資料的id,並用name來存載,所以不用顯示(hidden)-->
+              <input type="hidden" value="{{ record.id }}" name="delete_val">
+              <input type="submit" class="btn btn-danger" value="刪除">
+            </form>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
