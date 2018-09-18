@@ -67,7 +67,10 @@ def echo(request, userid):
 """
 from django.shortcuts import redirect
 from .models import Record, Category
+from .forms import RecordForm
+
 def frontpage(request):
+    record_form = RecordForm(initial={'balance_type':'支出'})
     records=Record.objects.filter()
     income_list = [record.cash for record in records if record.balance_type == '收入']
     outcome_list = [record.cash for record in records if record.balance_type == '支出']

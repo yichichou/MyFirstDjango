@@ -98,6 +98,22 @@
 
 
 
+      <!-- jquery cdn 最新版本的minified:置入jquery的套件 -->
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+      <!--bootstrap=datepicker cdn :安插前端的小日曆 -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+      <!--實作上面兩者的套件 -->
+      <script>
+        $(function () {
+          $('#datepicker1').datepicker({
+            format: 'yyyy-mm-dd'
+          });
+        })
+      </script>
+
 </body>
 
 </html>
