@@ -3,9 +3,15 @@ from django.forms import ModelForm, TextInput
 
 #datetime
 from datetime import date
-from .models import Record
+from .models import Record, Category
 
 class RecordForm(ModelForm):
+
+    def __init__(self,user,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        by_user = Category.objects.filter(user=user) | Category.objects.filter(pk=39)
+        self.fields['category'].queryset = by_user
+        
     class Meta:
         model = Record  #用record物件來跟他作連動
         fields = ['date','description','category','cash','balance_type'] #要跟record連動的欄位 

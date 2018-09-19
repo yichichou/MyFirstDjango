@@ -74,8 +74,9 @@ from .forms import RecordForm
 
 @login_required
 def frontpage(request):
-    record_form = RecordForm(initial={'balance_type':'支出'})
-    records=Record.objects.filter()
+    user = request.user #會自帶user的屬性
+    record_form = RecordForm(user=user,initial={'balance_type':'支出'})
+    records=Record.objects.filter(user=user)
     income_list = [record.cash for record in records if record.balance_type == '收入']
     outcome_list = [record.cash for record in records if record.balance_type == '支出']
     income =sum(income_list) if len(income_list)!=0 else 0
@@ -86,7 +87,8 @@ def frontpage(request):
 
 @login_required
 def settings(request):
-    categories = Category.objects.filter()
+    user = request.user
+    categories = Category.objects.filter(user=user)
     return render(request,'dashboard/settings.html',locals())
 
 
@@ -94,10 +96,11 @@ def settings(request):
 def addCategory(request):
     '''為了避免有人用GET的方式(也就是直接在網址後面輸入addCategory)呼叫addCategory方法，所以要設定條件，之後就會直接導入/settings(也就是執行return redirect('/settings'))'''
     if request.method=='POST': 
+        user = request.user
         posted_data = request.POST
         '''表單內容是使用post的方式傳，所以這裡用post來接，所接入的值為一個dictionary的物件''' 
         category=posted_data['add_category']
-        Category.objects.get_or_create(category=category)
+        Category.objects.get_or_create(category=category,user=user)
         '''使用get_or_create是避免會有重複的值出現'''
     return redirect('/settings')
     '''表示上面事情完成後，回傳後用redirect的方式，回傳到/settings的頁面'''
@@ -105,18 +108,21 @@ def addCategory(request):
 
 @login_required
 def deleteCategory(request,category):
-    Category.objects.filter(category=category).delete()
+    user = request.user
+    Category.objects.filter(category=category,user=user).delete()
     return redirect('/settings')
 
 
 @login_required
 def addRecord(request):
     if request.method =="POST":
-        form = RecordForm(request.POST)
+        user = request.user
+        form = RecordForm(user,request.POST)
 
         #檢查form接收到的值是否有符合規定，相當於第三方驗證(如:信箱格式規定,)。is_valid()是用來驗證有沒有這個錯誤
         if form.is_valid():
-
+            record = form.save(commit=False)
+            record.user = user
             #form.save表示通過驗證，就存進至model裡
             form.save ()
     return redirect('/')
@@ -141,7 +147,7 @@ from django.shortcuts import redirect
 def logout(request):
     auth.logout(request)
     return redirect('/')
-    
+
 
 
 from django.shortcuts import render

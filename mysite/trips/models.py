@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import CharField,DateField,ForeignKey,IntegerField
+from django.contrib.auth.models import User
 # Create your models here.
 #Django 預設會為每一個 Model 加上 id 欄位，並將這個欄位設成 primary key（主鍵）。
 #model相關參數參考網址：https://docs.djangoproject.com/en/1.8/ref/models/fields/
@@ -16,6 +17,7 @@ class Post(models.Model):
 
 BALANCE_TYPE=((u'收入',u'收入'),(u'支出',u'支出'))  #(key,value)
 class Category(models.Model):
+	user = models.ForeignKey(User,null=True)
 	category = CharField(max_length=20)
 	
 	def __str__(self):
@@ -28,6 +30,7 @@ class Category(models.Model):
 #models.SET_DEFAULT:要搭配DEFAULT:跟上面類似，會將null值變成自己要設定的值
 #models.SET():要傳入function
 class Record(models.Model):
+	user = models.ForeignKey(User,null=True)
 	date=DateField()
 	description=CharField(max_length=300)
 	category = ForeignKey(Category,on_delete=models.SET_NULL,null=True)
