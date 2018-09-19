@@ -1,8 +1,7 @@
 from django.shortcuts import render #render 產生要回傳的 HttpResponse 物件。
 from django.http import HttpResponse
 from datetime import datetime
-
-
+from django.contrib.auth.decorators import login_required
 
 #render(request,template_name,dictionary )
 	#request -- HttpRequest 物件，發送網址的請求
@@ -69,6 +68,11 @@ from django.shortcuts import redirect
 from .models import Record, Category
 from .forms import RecordForm
 
+
+#login_required表示為用戶如果在有真正登入的底下，才能夠真正做使用
+
+
+@login_required
 def frontpage(request):
     record_form = RecordForm(initial={'balance_type':'支出'})
     records=Record.objects.filter()
@@ -79,10 +83,14 @@ def frontpage(request):
     net = income-outcome
     return render(request,'dashboard/index.html',locals())
 
+
+@login_required
 def settings(request):
     categories = Category.objects.filter()
     return render(request,'dashboard/settings.html',locals())
 
+
+@login_required
 def addCategory(request):
     '''為了避免有人用GET的方式(也就是直接在網址後面輸入addCategory)呼叫addCategory方法，所以要設定條件，之後就會直接導入/settings(也就是執行return redirect('/settings'))'''
     if request.method=='POST': 
@@ -94,11 +102,14 @@ def addCategory(request):
     return redirect('/settings')
     '''表示上面事情完成後，回傳後用redirect的方式，回傳到/settings的頁面'''
 
+
+@login_required
 def deleteCategory(request,category):
     Category.objects.filter(category=category).delete()
     return redirect('/settings')
 
-	
+
+@login_required
 def addRecord(request):
     if request.method =="POST":
         form = RecordForm(request.POST)
@@ -110,6 +121,8 @@ def addRecord(request):
             form.save ()
     return redirect('/')
 
+
+@login_required
 def deleteRecord(request):
     if request.method == "POST":
         #delete_val是index.html中的一個欄位的name值
@@ -117,11 +130,24 @@ def deleteRecord(request):
         Record.objects.filter(id=id).delete()
     return redirect('/')
 
+def logout(request):
+	auth.logout(request)
+	return redirect('/')
+
+
+from django.contrib import auth
+from django.shortcuts import redirect
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
+    
 
 
 from django.shortcuts import render
 from .models import Post  #取得所有 posts -- 透過 Post.objects.all() 從資料庫取得全部的 posts，並傳入 home.html 這個 template。
 
+@login_required
 def home(request):
     post_list = Post.objects.all()
     return render(request, 'home.html', {
